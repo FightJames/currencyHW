@@ -1,4 +1,4 @@
-package com.james.crypto.view.model
+package com.james.crypto.data.source.model
 
 
 data class Currency(
