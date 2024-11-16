@@ -17,10 +17,14 @@ interface CoinDao {
     suspend fun insertCrypto(cryptoCurrency: CryptoCurrency)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCrypto(cryptoCurrency: List<CryptoCurrency>)
+    suspend fun insertCrypto(cryptoCurrencyList: List<CryptoCurrency>)
 
+    @Query("SELECT * FROM ${CoinDB.CRYPTO_TABLE_NAME}")
+    suspend fun getAllFiatCurrency(): List<FiatCurrency>
 
-//    @Delete
-//    suspend fun deleteTimerData(timerData: TimerData)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFiat(fiatCurrency: FiatCurrency)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFiat(fiatCurrencyList: List<FiatCurrency>)
 }

@@ -17,5 +17,22 @@ data class CryptoCurrency(
     val name: String,
 
     @ColumnInfo(name = "symbol", typeAffinity = TEXT)
-    var symbol: String,
+    val symbol: String,
+)
+
+@Keep
+@Entity(tableName = CoinDB.FIAT_TABLE_NAME)
+data class FiatCurrency(
+    @PrimaryKey
+    @ColumnInfo(name = "id", typeAffinity = TEXT)
+    val id: String,
+
+    @ColumnInfo(name = "name", typeAffinity = TEXT)
+    val name: String,
+
+    @ColumnInfo(name = "symbol", typeAffinity = TEXT)
+    val symbol: String,
+
+    @ColumnInfo(name = "code", typeAffinity = TEXT)
+    val code: String,
 )
