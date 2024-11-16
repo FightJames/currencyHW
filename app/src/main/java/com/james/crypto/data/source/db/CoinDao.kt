@@ -19,7 +19,7 @@ interface CoinDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCrypto(cryptoCurrencyList: List<CryptoCurrency>)
 
-    @Query("SELECT * FROM ${CoinDB.CRYPTO_TABLE_NAME}")
+    @Query("SELECT * FROM ${CoinDB.FIAT_TABLE_NAME}")
     suspend fun getAllFiatCurrency(): List<FiatCurrency>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
