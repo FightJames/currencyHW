@@ -7,6 +7,7 @@ import com.james.crypto.data.source.db.CoinDBSource
 import com.james.crypto.data.source.db.CryptoCurrency
 import com.james.crypto.data.source.db.FiatCurrency
 import com.james.crypto.di.IoDispatcher
+import com.james.crypto.view.model.Currency
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class CurrencyRepository @Inject constructor(
     private val coinDBSource: CoinDBSource,
     private val coinAssetsSource: CoinAssetsSource,
-    @IoDispatcher val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
     suspend fun insertCoinToDB() = withContext(dispatcher) {
@@ -25,18 +26,18 @@ class CurrencyRepository @Inject constructor(
     }
 
     suspend fun getAllCryptoCurrency() = withContext(dispatcher) {
-        coinDBSource.getAllCryptoCurrency()
+        coinDBSource.getAllCryptoCurrency().map { it.toCurrency() }
     }
 
     suspend fun getAllFiatCurrency() = withContext(dispatcher) {
-        coinDBSource.getAllFiatCurrency()
+        coinDBSource.getAllFiatCurrency().map { it.toCurrency() }
     }
 
     suspend fun clearDB() {
         coinDBSource.clearDB()
     }
 
-   private fun CryptoCurrencyInfo.toCryptoCurrency() =
+    private fun CryptoCurrencyInfo.toCryptoCurrency() =
         CryptoCurrency(
             id = this.id,
             name = this.name,
@@ -51,4 +52,15 @@ class CurrencyRepository @Inject constructor(
             code = this.code
         )
 
+    private fun CryptoCurrency.toCurrency() =
+        Currency(
+            name = this.name,
+            code = this.symbol
+        )
+
+    private fun FiatCurrency.toCurrency() =
+        Currency(
+            name = this.name,
+            code = this.code
+        )
 }
