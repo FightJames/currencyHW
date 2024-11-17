@@ -1,5 +1,6 @@
 package com.james.crypto.data
 
+import com.james.crypto.data.search.CurrencyTrie
 import com.james.crypto.data.source.assets.CoinAssetsSource
 import com.james.crypto.data.source.assets.CryptoCurrencyInfo
 import com.james.crypto.data.source.assets.FiatCurrencyInfo
@@ -8,7 +9,10 @@ import com.james.crypto.data.source.db.CryptoCurrency
 import com.james.crypto.data.source.db.FiatCurrency
 import com.james.crypto.di.IoDispatcher
 import com.james.crypto.data.source.model.Currency
+import com.james.crypto.di.DefaultDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,22 +21,44 @@ import javax.inject.Singleton
 class CurrencyRepositoryImpl @Inject constructor(
     private val coinDBSource: CoinDBSource,
     private val coinAssetsSource: CoinAssetsSource,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
-): CurrencyRepository {
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
+) : CurrencyRepository {
+    private val cryptoCurrencySearchTree = CurrencyTrie()
+    private val fiatCurrencySearchTree = CurrencyTrie()
+    private val mutex = Mutex()
 
-    override suspend fun insertCoinToDB() = withContext(dispatcher) {
-        coinDBSource.insertFiatCurrency(
-            coinAssetsSource.readFiatCurrencyInfo().map { it.toFiatCurrency() })
-        coinDBSource.insertCryptoCurrency(
-            coinAssetsSource.readCryptoCurrencyInfo().map { it.toCryptoCurrency() })
+    override suspend fun insertCoinToDB() = withContext(ioDispatcher) {
+        mutex.withLock {
+            val fiatCurrencyList = coinAssetsSource.readFiatCurrencyInfo().map { it.toFiatCurrency() }
+            val cryptoCurrencyList = coinAssetsSource.readCryptoCurrencyInfo().map { it.toCryptoCurrency() }
+            coinDBSource.insertFiatCurrency(fiatCurrencyList)
+            coinDBSource.insertCryptoCurrency(cryptoCurrencyList)
+            cryptoCurrencySearchTree.reset()
+            fiatCurrencySearchTree.reset()
+            cryptoCurrencyList.forEach {
+                cryptoCurrencySearchTree.insert(it.toCurrency())
+            }
+            fiatCurrencyList.forEach {
+                fiatCurrencySearchTree.insert(it.toCurrency())
+            }
+        }
     }
 
-    override suspend fun getAllCryptoCurrency() = withContext(dispatcher) {
+    override suspend fun getAllCryptoCurrency() = withContext(ioDispatcher) {
         coinDBSource.getAllCryptoCurrency().map { it.toCurrency() }
     }
 
-    override suspend fun getAllFiatCurrency() = withContext(dispatcher) {
+    override suspend fun getAllFiatCurrency() = withContext(ioDispatcher) {
         coinDBSource.getAllFiatCurrency().map { it.toCurrency() }
+    }
+
+    override suspend fun searchCrypto(keyword: String): List<Currency> = withContext(defaultDispatcher) {
+        return@withContext cryptoCurrencySearchTree.search(keyword)
+    }
+
+    override suspend fun searchFiat(keyword: String): List<Currency> = withContext(defaultDispatcher) {
+        return@withContext fiatCurrencySearchTree.search(keyword)
     }
 
     override suspend fun clearDB() {

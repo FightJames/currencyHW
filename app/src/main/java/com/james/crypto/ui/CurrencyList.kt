@@ -1,4 +1,6 @@
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.james.crypto.R
 import com.james.crypto.data.source.model.Currency
 import com.james.crypto.ui.CurrencyList
@@ -210,9 +213,13 @@ fun PreviewCurrencySelectionScreen() {
 
 @Composable
 fun CurrencyListPage(
-    currencyList: CurrencyList
+    currencyList: CurrencyList,
+    navController: NavController
 ) {
     val currencyViewModel: CurrencyViewModel = hiltViewModel()
+    BackHandler {
+        navController.popBackStack()
+    }
     when (currencyList.currencyType) {
         CurrencyType.CRYPTO -> currencyViewModel.getCrypto()
         CurrencyType.FIAT -> currencyViewModel.getFiat()

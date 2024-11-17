@@ -1,4 +1,4 @@
-package com.james.crypto
+package com.james.crypto.data.source
 
 import com.james.crypto.data.source.db.CoinDBManager
 import com.james.crypto.data.source.db.CoinDBSourceImpl

@@ -26,9 +26,6 @@ class DemoActivity : ComponentActivity() {
             CryptoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val navController = rememberNavController()
-                    BackHandler {
-                        navController.popBackStack()
-                    }
                     NavigationConfig(
                         navController = navController,
                         modifier = Modifier.padding(innerPadding),
@@ -36,7 +33,7 @@ class DemoActivity : ComponentActivity() {
                             IndexPage(navController)
                         },
                         currencyListPage = { currencyList ->
-                            CurrencyListPage(currencyList)
+                            CurrencyListPage(currencyList, navController)
                         }
                     )
                 }

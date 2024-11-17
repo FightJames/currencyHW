@@ -11,4 +11,8 @@ interface CurrencyRepository {
     suspend fun getAllFiatCurrency(): List<Currency>
 
     suspend fun clearDB()
+
+    suspend fun searchCrypto(keyword: String): List<Currency>
+
+    suspend fun searchFiat(keyword: String): List<Currency>
 }
