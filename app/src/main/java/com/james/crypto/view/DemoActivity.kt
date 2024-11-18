@@ -1,9 +1,7 @@
 package com.james.crypto.view
 
-import CurrencyListPage
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +32,6 @@ class DemoActivity : ComponentActivity() {
                             IndexPage(navController)
                         },
                         currencyListPage = { currencyList ->
-//                            CurrencyListPage(currencyList, navController)
                             SearchableCurrencyList(
                                 currencyList = currencyList,
                                 navController = navController
