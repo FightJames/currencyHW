@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.james.crypto.ui.IndexPage
 import com.james.crypto.ui.NavigationConfig
+import com.james.crypto.ui.SearchableCurrencyList
 import com.james.crypto.ui.theme.CryptoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,7 +34,8 @@ class DemoActivity : ComponentActivity() {
                             IndexPage(navController)
                         },
                         currencyListPage = { currencyList ->
-                            CurrencyListPage(currencyList, navController)
+//                            CurrencyListPage(currencyList, navController)
+                            SearchableCurrencyList(currencyList = currencyList, navController = navController)
                         }
                     )
                 }
