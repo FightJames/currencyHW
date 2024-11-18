@@ -92,9 +92,10 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun testSearchCrypto() {
+    fun testSearchCryptoWithoutEmpty() {
         val expect = listOf(Currency(name = "a", code = "b"))
         mockkConstructor(CurrencyTrie::class)
+        every { anyConstructed<CurrencyTrie>().isEmpty() } returns false
         every { anyConstructed<CurrencyTrie>().search(any()) } returns expect
         currencyRepositoryImpl =
             CurrencyRepositoryImpl(coinDBSource, coinAssetsSource, testDispatcher, testDispatcher)
@@ -106,14 +107,49 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun testSearchFiat() {
+    fun testSearchCryptoWithEmpty() {
         val expect = listOf(Currency(name = "a", code = "b"))
         mockkConstructor(CurrencyTrie::class)
+        every { anyConstructed<CurrencyTrie>().isEmpty() } returns true
+        every { anyConstructed<CurrencyTrie>().search(any()) } returns expect
+        currencyRepositoryImpl =
+            CurrencyRepositoryImpl(coinDBSource, coinAssetsSource, testDispatcher, testDispatcher)
+        coEvery { coinDBSource.getAllCryptoCurrency() } returns emptyList()
+        runTest(testDispatcher) {
+            val actual = currencyRepositoryImpl.searchCrypto("b")
+            coVerify { coinDBSource.getAllCryptoCurrency() }
+            verify { anyConstructed<CurrencyTrie>().search(any()) }
+            Assert.assertEquals(expect, actual)
+        }
+    }
+
+    @Test
+    fun testSearchFiatWithoutEmpty() {
+        val expect = listOf(Currency(name = "a", code = "b"))
+        mockkConstructor(CurrencyTrie::class)
+        every { anyConstructed<CurrencyTrie>().isEmpty() } returns false
         every { anyConstructed<CurrencyTrie>().search(any()) } returns expect
         currencyRepositoryImpl =
             CurrencyRepositoryImpl(coinDBSource, coinAssetsSource, testDispatcher, testDispatcher)
         runTest(testDispatcher) {
             val actual = currencyRepositoryImpl.searchFiat("b")
+            verify { anyConstructed<CurrencyTrie>().search(any()) }
+            Assert.assertEquals(expect, actual)
+        }
+    }
+
+    @Test
+    fun testSearchFiatWithEmpty() {
+        val expect = listOf(Currency(name = "a", code = "b"))
+        mockkConstructor(CurrencyTrie::class)
+        every { anyConstructed<CurrencyTrie>().isEmpty() } returns true
+        every { anyConstructed<CurrencyTrie>().search(any()) } returns expect
+        currencyRepositoryImpl =
+            CurrencyRepositoryImpl(coinDBSource, coinAssetsSource, testDispatcher, testDispatcher)
+        coEvery { coinDBSource.getAllFiatCurrency() } returns emptyList()
+        runTest(testDispatcher) {
+            val actual = currencyRepositoryImpl.searchFiat("b")
+            coVerify { coinDBSource.getAllFiatCurrency() }
             verify { anyConstructed<CurrencyTrie>().search(any()) }
             Assert.assertEquals(expect, actual)
         }

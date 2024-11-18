@@ -35,7 +35,10 @@ class DemoActivity : ComponentActivity() {
                         },
                         currencyListPage = { currencyList ->
 //                            CurrencyListPage(currencyList, navController)
-                            SearchableCurrencyList(currencyList = currencyList, navController = navController)
+                            SearchableCurrencyList(
+                                currencyList = currencyList,
+                                navController = navController
+                            )
                         }
                     )
                 }

@@ -80,6 +80,13 @@ class CurrencyTrieUnitTest {
         Assert.assertTrue(emptyResult.isEmpty())
     }
 
+    @Test
+    fun testIsEmpty() {
+        cryptoTrie.reset()
+        fiatTrie.reset()
+        Assert.assertTrue(cryptoTrie.isEmpty())
+        Assert.assertTrue(fiatTrie.isEmpty())
+    }
 
     @After
     fun clear() {

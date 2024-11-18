@@ -131,7 +131,6 @@ fun CurrencySelectionScreen(
                     fontSize = 16.sp,
                     modifier = Modifier
                         .padding(vertical = 4.dp)
-                        .background(Color(0xFFF5F5F5), shape = CircleShape)
                         .padding(8.dp)
                 )
             }
@@ -179,8 +178,7 @@ fun CurrencyCategoryItem(
         Text(
             text = category.name,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
+            fontWeight = FontWeight.Bold
         )
     }
 }

@@ -54,10 +54,28 @@ class CurrencyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchCrypto(keyword: String): List<Currency> = withContext(defaultDispatcher) {
+        if (cryptoCurrencySearchTree.isEmpty()) {
+            mutex.withLock {
+                if (cryptoCurrencySearchTree.isEmpty()) {
+                    getAllCryptoCurrency().forEach {
+                        cryptoCurrencySearchTree.insert(it)
+                    }
+                }
+            }
+        }
         return@withContext cryptoCurrencySearchTree.search(keyword)
     }
 
     override suspend fun searchFiat(keyword: String): List<Currency> = withContext(defaultDispatcher) {
+        if (fiatCurrencySearchTree.isEmpty()) {
+            mutex.withLock {
+                if (fiatCurrencySearchTree.isEmpty()) {
+                    getAllFiatCurrency().forEach {
+                        fiatCurrencySearchTree.insert(it)
+                    }
+                }
+            }
+        }
         return@withContext fiatCurrencySearchTree.search(keyword)
     }
 

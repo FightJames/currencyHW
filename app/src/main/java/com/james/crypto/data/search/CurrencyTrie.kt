@@ -28,6 +28,8 @@ class CurrencyTrie {
         root.children.clear()
     }
 
+    fun isEmpty() = root.children.isEmpty()
+
     private fun collectCurrencies(node: TrieNode): List<Currency> {
         val result = mutableListOf<Currency>()
         if (node.isEndOfWord) {
