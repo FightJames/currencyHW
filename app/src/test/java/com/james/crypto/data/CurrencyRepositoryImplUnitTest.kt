@@ -42,7 +42,7 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun insertData() {
+    fun testInsertData() {
         runTest(testDispatcher) {
             // need to re-mock, because of CurrencyTrie
             mockkConstructor(CurrencyTrie::class)
@@ -70,7 +70,7 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun getAllCryptoCurrency() {
+    fun testGetAllCryptoCurrency() {
         runTest(testDispatcher) {
             coEvery { coinDBSource.getAllCryptoCurrency() } returns CurrencyFakeDataHelper.cryptoDBCurrencyFakeData()
             val expected = CurrencyFakeDataHelper.cryptoCurrencyFakeData()
@@ -81,7 +81,7 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun getAllFiatCurrency() {
+    fun testGetAllFiatCurrency() {
         runTest(testDispatcher) {
             coEvery { coinDBSource.getAllFiatCurrency() } returns CurrencyFakeDataHelper.fiatDBCurrencyFakeData()
             val expected = CurrencyFakeDataHelper.fiatCurrencyFakeData()
@@ -92,7 +92,7 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun searchCrypto() {
+    fun testSearchCrypto() {
         val expect = listOf(Currency(name = "a", code = "b"))
         mockkConstructor(CurrencyTrie::class)
         every { anyConstructed<CurrencyTrie>().search(any()) } returns expect
@@ -106,7 +106,7 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun searchFiat() {
+    fun testSearchFiat() {
         val expect = listOf(Currency(name = "a", code = "b"))
         mockkConstructor(CurrencyTrie::class)
         every { anyConstructed<CurrencyTrie>().search(any()) } returns expect
@@ -120,7 +120,7 @@ class CurrencyRepositoryImplUnitTest {
     }
 
     @Test
-    fun clearDB() {
+    fun testClearDB() {
         runTest(testDispatcher) {
             coEvery { coinDBSource.clearDB() } just Runs
             currencyRepositoryImpl.clearDB()

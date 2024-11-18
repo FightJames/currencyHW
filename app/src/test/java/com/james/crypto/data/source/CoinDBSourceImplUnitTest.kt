@@ -38,7 +38,7 @@ class CoinDBSourceImplUnitTest {
     }
 
     @Test
-    fun insertSingleCryptoCurrency() {
+    fun testInsertSingleCryptoCurrency() {
         runTest(testDispatcher) {
             val cryptoCurrency = CryptoCurrency(id = "test", name = "test1", symbol = "test2")
             val slot = slot<CryptoCurrency>()
@@ -49,7 +49,7 @@ class CoinDBSourceImplUnitTest {
     }
 
     @Test
-    fun insertCryptoCurrencyList() {
+    fun testInsertCryptoCurrencyList() {
         runTest(testDispatcher) {
             val cryptoCurrency = CryptoCurrency(id = "test", name = "test1", symbol = "test2")
             val data = listOf(cryptoCurrency, cryptoCurrency.copy(id = "test333"))
@@ -62,7 +62,7 @@ class CoinDBSourceImplUnitTest {
 
 
     @Test
-    fun insertSingleFiatCurrency() {
+    fun testInsertSingleFiatCurrency() {
         runTest(testDispatcher) {
             val fiatCurrency = FiatCurrency(id = "test", name = "test1", symbol = "test2", code = "code1")
             val slot = slot<FiatCurrency>()
@@ -73,7 +73,7 @@ class CoinDBSourceImplUnitTest {
     }
 
     @Test
-    fun insertFiatCurrencyList() {
+    fun testInsertFiatCurrencyList() {
         runTest(testDispatcher) {
             val fiatCurrency = FiatCurrency(id = "test", name = "test1", symbol = "test2", code = "code1")
             val data = listOf(fiatCurrency, fiatCurrency.copy(id = "test333", code = "code11"))
@@ -85,7 +85,7 @@ class CoinDBSourceImplUnitTest {
     }
 
     @Test
-    fun getAllCryptoCurrency() {
+    fun testGetAllCryptoCurrency() {
         runTest(testDispatcher) {
             val cryptoCurrency = CryptoCurrency(id = "test", name = "test1", symbol = "test2")
             val data = listOf(cryptoCurrency, cryptoCurrency.copy(id = "test333"))
