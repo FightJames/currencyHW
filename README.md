@@ -1,2 +1,1 @@
 # currencyHW
-HW
