@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/IndexFragment">
+
+    <fragment
+        android:id="@+id/IndexFragment"
+        android:name="com.james.crypto.view.fragment.IndexFragment"
+        android:label="@string/index_fragment_label"
+        tools:layout="@layout/fragment_index">
+
+        <action
+            android:id="@+id/action_IndexFragment_to_CurrencyListFragment"
+            app:destination="@id/CurrencyListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CurrencyListFragment"
+        android:name="com.james.crypto.view.fragment.CurrencyListFragment"
+        android:label="@string/currency_list_fragment_label"
+        tools:layout="@layout/fragment_currency_list">
+        <argument
+            android:name="CURRENCY_LIST"
+            app:argType="com.james.crypto.ui.CurrencyList"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_CurrencyListFragment_to_IndexFragment"
+            app:destination="@id/IndexFragment" />
+    </fragment>
+</navigation>

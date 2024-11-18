@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 
 
 @Composable
@@ -35,7 +36,7 @@ fun NavigationConfig(
 object Index
 
 @Serializable
-data class CurrencyList(val currencyType: CurrencyType)
+data class CurrencyList(val currencyType: CurrencyType): java.io.Serializable
 
 @Serializable
 enum class CurrencyType{

@@ -1,5 +1,6 @@
 package com.james.crypto.ui
 
+import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.james.crypto.view.IndexUiState
 import com.james.crypto.view.IndexViewModel
+import com.james.crypto.R
+import com.james.crypto.view.fragment.CURRENCY_LIST
 
 @Composable
 fun IndexUI(
@@ -91,13 +94,22 @@ fun IndexPage(navController: NavController) {
             indexViewModel.insertData()
         },
         onSwitchToCrypto = {
-            navController.navigate(CurrencyList(CurrencyType.CRYPTO))
+            val bundle = Bundle().apply {
+                putSerializable(CURRENCY_LIST, CurrencyList(CurrencyType.CRYPTO))
+            }
+            navController.navigate(R.id.action_IndexFragment_to_CurrencyListFragment, bundle)
         },
         onSwitchToFiat = {
-            navController.navigate(CurrencyList(CurrencyType.FIAT))
+            val bundle = Bundle().apply {
+                putSerializable(CURRENCY_LIST, CurrencyList(CurrencyType.FIAT))
+            }
+            navController.navigate(R.id.action_IndexFragment_to_CurrencyListFragment, bundle)
         },
         onDisplayPurchasable = {
-            navController.navigate(CurrencyList(CurrencyType.CRYPTO_FIAT))
+            val bundle = Bundle().apply {
+                putSerializable(CURRENCY_LIST, CurrencyList(CurrencyType.CRYPTO_FIAT))
+            }
+            navController.navigate(R.id.action_IndexFragment_to_CurrencyListFragment, bundle)
         }
     )
 }

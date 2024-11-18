@@ -5,7 +5,6 @@ import EmptyScreen
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -62,7 +61,6 @@ fun SearchableCurrencyList(
 ) {
 
     val currencyViewModel: CurrencyViewModel = hiltViewModel()
-
     var query by remember { mutableStateOf("") }
     fun getCurrency() {
         when (currencyList.currencyType) {

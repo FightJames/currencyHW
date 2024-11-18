@@ -12,6 +12,7 @@ android {
     namespace = "com.james.crypto"
     compileSdk = 34
 
+
     defaultConfig {
         applicationId = "com.james.crypto"
         minSdk = 24
@@ -50,6 +51,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        viewBinding = true
         compose = true
     }
     composeOptions {
@@ -75,6 +77,9 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.coroutines)
     implementation(libs.hilt)
+    implementation(libs.material)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
     ksp(libs.hilt.compiler)
     implementation(libs.room)
     ksp(libs.room.compiler)
@@ -84,6 +89,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlin.serialization)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     testImplementation(libs.room.test)
     testImplementation(libs.coroutines.test)
